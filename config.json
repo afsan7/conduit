@@ -1,0 +1,18 @@
+{
+    "listeners": [
+        {
+            "name": "main_listener",
+            "address": "0.0.0.0:8080"
+        }
+    ],
+    "clusters": [
+        {
+            "name": "backend",
+            "endpoints": [
+                "127.0.0.1:9001",
+                "127.0.0.1:9002"
+            ],
+            "connect_timeout": "5s"
+        }
+    ]
+}
