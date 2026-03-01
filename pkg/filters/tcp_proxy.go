@@ -37,13 +37,13 @@ func (t *TCPProxy) OnNewConnection(ctx context.Context, conn net.Conn) api.Filte
 
 	errCh := make(chan error, 2)
 
-	// client -> upstream
+	// Upstream -> client
 	go func() {
 		_, err := io.Copy(conn, upstream)
 		errCh <- err
 	}()
 
-	// Upstream -> client
+	// Client -> upstream
 
 	go func() {
 		_, err := io.Copy(upstream, conn)
