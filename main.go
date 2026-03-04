@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 )
@@ -42,6 +43,9 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
+	// WaitGroup to track all listener goroutines
+	var wg sync.WaitGroup
+
 	//Start Listeners
 	for _, lc := range cfg.Listeners {
 
@@ -53,7 +57,9 @@ func main() {
 		}
 
 		listener := core.NewListener(lc, chainFilters, logger)
+		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			if err := listener.Start(ctx); err != nil {
 				logger.Error("Listener error", slog.String("error", err.Error()))
 			}
@@ -64,4 +70,8 @@ func main() {
 	//Block until shutdown signal
 	<-ctx.Done()
 	logger.Info("Shutting down Conduit")
+
+	// Wait for all listeners to finish draining connections
+	wg.Wait()
+	logger.Info("All listeners stopped. Goodbye!")
 }
