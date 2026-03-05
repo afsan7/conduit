@@ -75,7 +75,7 @@ The `config.json` file allows you to define `listeners` and `clusters`. Example:
 
 ```mermaid
 graph TD
-    Client([Client]) -->|TCP Connection| Listener[Listener (0.0.0.0:8080)]
+    Client([Client]) -->|TCP Connection| Listener["Listener (0.0.0.0:8080)"]
     
     subgraph Conduit Proxy
         Listener --> FilterChain[Filter Chain]
@@ -85,11 +85,11 @@ graph TD
             LoggerFilter -->|Continue| TCPProxyFilter[TCP Proxy Filter]
         end
         
-        TCPProxyFilter -->|Dial| Cluster[Cluster 'backend']
+        TCPProxyFilter -->|Dial| Cluster["Cluster 'backend'"]
     end
     
     subgraph Upstream Servers
-        Cluster -->|LB Round-Robin| Endpoint1[Endpoint 127.0.0.1:9001]
-        Cluster -->|LB Round-Robin| Endpoint2[Endpoint 127.0.0.1:9002]
+        Cluster -->|LB Round-Robin| Endpoint1["Endpoint 127.0.0.1:9001"]
+        Cluster -->|LB Round-Robin| Endpoint2["Endpoint 127.0.0.1:9002"]
     end
 ```
