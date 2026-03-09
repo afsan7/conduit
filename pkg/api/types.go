@@ -22,6 +22,7 @@ type NetworkFilter interface {
 type ListenerConfig struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
+	Cluster string `json:"cluster"`
 }
 
 type ClusterConfig struct {

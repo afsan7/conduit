@@ -48,12 +48,18 @@ func main() {
 
 	//Start Listeners
 	for _, lc := range cfg.Listeners {
-
+		cluster, ok := clusterMap[lc.Cluster]
+		if !ok {
+			logger.Error("Listener references unknown cluster",
+				slog.String("Listener", lc.Name),
+				slog.String("Cluster", lc.Cluster))
+			os.Exit(1)
+		}
 		//Chain filters
 
 		chainFilters := []api.NetworkFilter{
 			filters.NewLogger(logger),
-			filters.NewTCPProxy(clusterMap["backend"], logger),
+			filters.NewTCPProxy(cluster, logger),
 		}
 
 		listener := core.NewListener(lc, chainFilters, logger)

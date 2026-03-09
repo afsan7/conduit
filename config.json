@@ -2,7 +2,8 @@
     "listeners": [
         {
             "name": "main_listener",
-            "address": "0.0.0.0:8080"
+            "address": "0.0.0.0:8080",
+            "cluster": "backend"
         }
     ],
     "clusters": [
