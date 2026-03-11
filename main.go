@@ -12,7 +12,6 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
-	"time"
 )
 
 func main() {
@@ -35,8 +34,7 @@ func main() {
 	// Create Clusters
 	clusterMap := make(map[string]*core.Cluster)
 	for _, cc := range cfg.Clusters {
-		timeout, _ := time.ParseDuration(cc.ConnectTimeout)
-		clusterMap[cc.Name] = core.NewCluster(cc.Name, cc.Endpoints, timeout, logger)
+		clusterMap[cc.Name] = core.NewCluster(cc.Name, cc.Endpoints, cc.ConnectTimeout.Duration, logger)
 	}
 
 	//Create context that cancels on SIGINT/SIGTERM
